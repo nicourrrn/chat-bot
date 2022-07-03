@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 abstract class Message {
-  static int lastId = 0;
+  static int lastId = -1;
 
   Message (this.isUser, [this.moduleName]) {
     lastId ++;

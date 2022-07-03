@@ -8,3 +8,4 @@ abstract class Result {
 abstract class Module{
   Result? execute(Bot context, List<String> args);
 }
+
