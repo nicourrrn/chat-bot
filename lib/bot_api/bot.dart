@@ -14,6 +14,15 @@ class Bot extends ChangeNotifier {
 
   UnmodifiableListView<Message> get messageHistory => UnmodifiableListView(_messageHistory);
 
+  deleteMessage({int? index, int? id}) {
+    if (index != null) {
+      _messageHistory.removeAt(index);
+    } else if (id != null) {
+      _messageHistory.removeWhere((element) => element.id == id);
+    }
+    notifyListeners();
+  }
+
   Message doCommand(List<String> args) {
     for (var module in modules) {
       var result = module.execute(this, args);
