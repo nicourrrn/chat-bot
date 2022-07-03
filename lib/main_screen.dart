@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:chat_bot/bot_api/bot.dart';
+import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 
 import 'base_module/messages.dart';
@@ -31,21 +32,31 @@ class MainScreen extends StatelessWidget {
                           : AlignmentDirectional.centerStart,
                     );
                   })),
-          Row(
-            children: [
-              Expanded(child: TextField(
-                controller: userTextCtrl,
-              )),
-              OutlinedButton(child: const Text("Send"),
-                  onPressed: () {
-                    var text = userTextCtrl.text;
-                    bot.addMessage(TextMessage(text, true));
-                    var result = bot.doCommand(text.split(' '));
-                    bot.addMessage(result);
-                    userTextCtrl.text = '';
-                  })
-            ],
-          )
+          Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                  Expanded(child: TextField(
+                      controller: userTextCtrl,
+                      decoration: InputDecoration(
+                          hintText: "Ваше повідомлення",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15),
+                            borderSide: BorderSide.none
+                          ),
+                          filled: true,
+                          fillColor: Colors.blue.shade100))),
+                  OutlinedButton(
+                      child: const Text("Send"),
+                      onPressed: () {
+                        var text = userTextCtrl.text;
+                        bot.addMessage(TextMessage(text, true));
+                        var result = bot.doCommand(text.split(' '));
+                        bot.addMessage(result);
+                        userTextCtrl.text = '';
+                      })
+                ])),
         ]));
   }
 }

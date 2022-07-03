@@ -30,6 +30,14 @@ class _NullResult extends Message{
 
   @override
   Widget getWidget() {
-    return const Text("Команда не знайдена");
+    return Container(
+      child: const Text("Команда не знайдена!!!"),
+      decoration: BoxDecoration(
+        color: Colors.red.shade200,
+        borderRadius: BorderRadius.circular(15),
+      ),
+      padding: const EdgeInsets.all(10),
+    );
   }
+
 }

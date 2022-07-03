@@ -7,7 +7,14 @@ class TextMessage extends Message {
 
   @override
   Widget getWidget() {
-    return Text(text);
+    return Container(
+      child: Text(text),
+      decoration: BoxDecoration(
+        color: Colors.blue.shade200,
+        borderRadius: BorderRadius.circular(15),
+      ),
+    padding: const EdgeInsets.all(10),
+    );
   }
 
 }
