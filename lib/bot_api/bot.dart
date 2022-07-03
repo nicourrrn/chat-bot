@@ -1,8 +1,7 @@
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
-import 'message.dart';
-import 'abstract.dart';
+import 'api.dart';
 
 class Bot extends ChangeNotifier {
   final List<Message> _messageHistory = [];
@@ -14,20 +13,22 @@ class Bot extends ChangeNotifier {
 
   UnmodifiableListView get messageHistory => UnmodifiableListView(_messageHistory);
 
-  Result doCommand(List<String> args) {
+  Message doCommand(List<String> args) {
     for (var module in modules) {
       var result = module.execute(this, args);
       if (result != null) {
         return result;
       }
     }
-    return NullResult();
+    return _NullResult();
   }
 }
 
-class NullResult extends Result{
+class _NullResult extends Message{
+  _NullResult() : super(false);
+
   @override
-  Widget get() {
+  Widget getWidget() {
     return const Text("Команда не знайдена");
   }
 }

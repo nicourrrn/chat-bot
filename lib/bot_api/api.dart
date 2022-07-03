@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'bot.dart';
+
+
+abstract class Module{
+  Message? execute(Bot context, List<String> args);
+}
 
 abstract class Message {
   static int lastId = -1;
@@ -12,15 +18,4 @@ abstract class Message {
   late final String? moduleName;
   DateTime createAt = DateTime.now();
   Widget getWidget();
-}
-
-class TextMessage extends Message {
-  TextMessage(this.text, bool isUser, [String? moduleName]) : super(isUser, moduleName);
-  String text;
-
-  @override
-  Widget getWidget() {
-    return Text(text);
-  }
-
 }
