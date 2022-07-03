@@ -1,0 +1,51 @@
+@startuml
+
+package Flutter <<Node>> {
+    abstract class Widget{
+        build();
+    }
+    abstract class ChangeNotifier {
+        notifyListeners();
+    }
+}
+
+
+abstract class Result {
+	Widget get();
+}
+
+abstract class Module {
+	'context для доступа к сообщениям
+	Result? execute(Bot context, List<String> args);
+}
+
+
+abstract class Message {
+    static int lastId;
+
+    int id;
+    bool isUser;
+    String? moduleName;
+    DateTime createAt;
+    Widget getWidget();
+}
+
+class TextMessage {
+    String text;
+}
+
+TextMessage --|> Message
+
+class Bot {
+	List<Message> _messageHistory;
+	void _addMessage(Message message);
+	UnmodifiableListView<Message> get messageHistory();
+	List<Module> modules;
+	Result doCommand(List<String> args);
+}
+
+ChangeNotifier <|-- Bot
+Module -> Bot : Result
+Result -> Widget
+Bot <- Message
+@enduml
