@@ -50,6 +50,9 @@ class MainScreen extends StatelessWidget {
                   OutlinedButton(
                       child: const Text("Send"),
                       onPressed: () {
+                        if (userTextCtrl.text == '') {
+                          return;
+                        }
                         var text = userTextCtrl.text;
                         bot.addMessage(TextMessage(text, true));
                         var result = bot.doCommand(text.split(' '));
