@@ -9,9 +9,10 @@ class Bot extends ChangeNotifier {
 
   addMessage(Message message) {
     _messageHistory.add(message);
+    notifyListeners();
   }
 
-  UnmodifiableListView get messageHistory => UnmodifiableListView(_messageHistory);
+  UnmodifiableListView<Message> get messageHistory => UnmodifiableListView(_messageHistory);
 
   Message doCommand(List<String> args) {
     for (var module in modules) {

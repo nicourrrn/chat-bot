@@ -1,8 +1,6 @@
 import 'package:chat_bot/bot_api/api.dart';
 import 'package:chat_bot/bot_api/bot.dart';
 
-import 'package:flutter/material.dart';
-
 import 'messages.dart';
 
 class BaseModule extends Module {
