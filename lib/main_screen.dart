@@ -45,6 +45,7 @@ class MainScreen extends StatelessWidget {
                       alignment: msg.isUser
                           ? AlignmentDirectional.centerEnd
                           : AlignmentDirectional.centerStart,
+                      padding: const EdgeInsets.only(bottom: 5),
                     );
                   }))),
           Padding(
@@ -71,7 +72,9 @@ class MainScreen extends StatelessWidget {
                         var text = userTextCtrl.text;
                         bot.addMessage(TextMessage(text, true));
                         var result = bot.doCommand(text.split(' '));
-                        bot.addMessage(result);
+                        if (result != null) {
+                          bot.addMessage(result);
+                        }
                         userTextCtrl.text = '';
                       })
                 ])),

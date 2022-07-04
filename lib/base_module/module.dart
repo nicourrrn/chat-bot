@@ -17,11 +17,31 @@ class BaseModule extends Module {
     return TextMessage("Було виделано $messageCount повідомлень!", false, 'BaseModule');
   }
 
+  Message plantText(Bot context, List<String> args) {
+      context.addMessage(TextMessage("Добрий день!", false));
+      return TextMessage("Чи вечір....", false);
+  }
+
+  Message notFound(Bot context, List<String> args) {
+    return ErrorMessage("Команда не знайдена !", false);
+  }
+
+  Message dianaToDina(Bot context, List<String> args){
+    var lastMessage = context.messageHistory
+        .where((element) => element.isUser)
+        .last as TextMessage;
+    lastMessage.text = "Діна!";
+    return TextMessage("Я тебе виправив...", false);
+  }
+
   @override
   Message? execute(Bot context, List<String> args) {
     switch (args[0]) {
       case '/reply': return replyMessage(context, args);
       case '/clear': return clear(context, args);
+      case 'Привіт': return plantText(context, args);
+      case 'Діана' : return dianaToDina(context, args);
+      default: return notFound(context, args);
     }
   }
 
