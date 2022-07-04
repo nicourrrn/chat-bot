@@ -9,13 +9,23 @@ class MonoModule extends Module {
 
   Future<Message?> getClientInfo(Bot context, List<String> args) async {
     var clientInfo = await monoApi.clientInfo();
-    return TextMessage(clientInfo.name, false);
+    var text = "${clientInfo.name}:\n";
+    text += clientInfo.accounts.map((e) => "${e.cards.first.mask}: ${e.balance}").join('\n');
+    return TextMessage(text, false);
   }
 
+  Future<Message?> getCurrency(Bot context, List<String> args) async {
+    var currency = await monoApi.currency();
+    var text = currency
+        .map((CurrencyInfo e) => "${e.currencyA.code}/${e.currencyB.code}: ${e.rateBuy}/${e.rateSell}")
+        .join('\n');
+    return TextMessage(text ,false);
+  }
   MonoModule(String token) {
     monoApi = MonoAPI(token);
     commands = {
       '/get_me': getClientInfo,
+      '/currency': getCurrency,
     };
   }
 
