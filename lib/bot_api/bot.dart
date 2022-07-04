@@ -12,7 +12,8 @@ class Bot extends ChangeNotifier {
     notifyListeners();
   }
 
-  UnmodifiableListView<Message> get messageHistory => UnmodifiableListView(_messageHistory);
+  UnmodifiableListView<Message> get messageHistory =>
+      UnmodifiableListView(_messageHistory);
 
   deleteMessage({int? index, int? id}) {
     if (index != null) {
@@ -23,12 +24,20 @@ class Bot extends ChangeNotifier {
     notifyListeners();
   }
 
-  Message? doCommand(List<String> args) {
+  Future<Message?> doCommand(List<String> args) async {
     for (var module in modules) {
-      var result = module.execute(this, args);
+      var result = await module.execute(this, args);
       if (result != null) {
         return result;
       }
     }
+  }
+
+  Iterable<String> get commandNames {
+    List<String> templateNames = [];
+    for (var element in modules) {
+      templateNames += element.commandNames.toList();
+    }
+    return templateNames;
   }
 }
