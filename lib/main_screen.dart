@@ -34,14 +34,28 @@ class MainScreen extends StatelessWidget {
     var commands = context.commandNames.toList();
     List<Row> result = [];
     for (var i = 0; i < commands.length; i += 3) {
+      var end = i + 3 < commands.length ? i + 3 : commands.length - 1;
+      var commandsRow = commands.getRange(i, end);
       result.add(Row(
-          children: commands
+          children: commandsRow
               .map((e) => TextButton(
                   child: Text(e),
                   onPressed: () {
                     userTextCtrl.text = e;
                   }))
               .toList()));
+    }
+    var divByThree = commands.length % 3;
+    if (divByThree!= 0) {
+      result.add(Row(
+        children: commands.getRange(commands.length - divByThree, commands.length)
+        .map((e) => TextButton(
+          child: Text(e),
+          onPressed: (){
+            userTextCtrl.text = e;
+          },
+        )).toList(),
+      ));
     }
     return result;
   }
