@@ -8,7 +8,7 @@ class TextMessage extends Message {
   @override
   Widget getWidget() {
     return Container(
-      child: Text(text),
+      child: SelectableText(text),
       decoration: BoxDecoration(
         color: Colors.blue.shade200,
         borderRadius: BorderRadius.circular(15),
@@ -26,7 +26,7 @@ class ErrorMessage extends Message {
   @override
   Widget getWidget() {
     return Container(
-      child: Text(text),
+      child: SelectableText(text),
       decoration: BoxDecoration(
         color: Colors.red.shade200,
         borderRadius: BorderRadius.circular(15),
