@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:chat_bot/bot_api/bot.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 
-import 'base_module/messages.dart';
+import 'package:chat_bot/modules/base_module/messages.dart';
+import 'package:chat_bot/api/api.dart';
 
 class ScreenState extends ChangeNotifier{
   var _showCommands = false;
@@ -38,28 +38,27 @@ class MainScreen extends StatelessWidget {
       var commandsRow = commands.getRange(i, end);
       result.add(Row(
           children: commandsRow
-              .map((e) => TextButton(
+              .map((e) => Expanded(child: TextButton(
                   child: Text(e),
                   onPressed: () {
                     userTextCtrl.text = e;
-                  }))
+                  })))
               .toList()));
     }
     var divByThree = commands.length % 3;
     if (divByThree!= 0) {
       result.add(Row(
         children: commands.getRange(commands.length - divByThree, commands.length)
-        .map((e) => TextButton(
+        .map((e) => Expanded(child: TextButton(
           child: Text(e),
           onPressed: (){
             userTextCtrl.text = e;
           },
-        )).toList(),
+        ))).toList(),
       ));
     }
     return result;
   }
-
 
 
   @override
@@ -75,6 +74,26 @@ class MainScreen extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           title: const Text("Chat bot"),
+        ),
+        drawer: Drawer(
+          child: ListView(
+            children: [
+              ListTile(
+                leading: Icon(Icons.home),
+                title: const Text("Головна"),
+                onTap: () {
+                  Navigator.of(context).popAndPushNamed('/');
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.settings),
+                title: const Text("Налаштування"),
+                onTap: () {
+                  Navigator.of(context).popAndPushNamed('/setting');
+                },
+              )
+            ],
+          ),
         ),
         body: Column(children: [
           Expanded(

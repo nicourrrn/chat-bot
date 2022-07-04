@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'main_screen.dart';
 
-import 'package:chat_bot/bot_api/bot.dart';
+import 'package:chat_bot/api/api.dart';
+import 'package:chat_bot/modules/base_module/module.dart';
+import 'package:chat_bot/modules/monobank_module/module.dart';
 
-import 'package:chat_bot/base_module/module.dart';
-import 'package:chat_bot/monobank_module/module.dart';
+import 'package:chat_bot/screen/root.dart';
+import 'package:chat_bot/screen/setting.dart';
 
 Bot botWithModules() {
   var bot = Bot();
-  bot.modules.add(MonoModule(''));
+  bot.modules.add(MonoModule('uiQEBoAL2lI6XkMRKHYAy-fBnaYjNKKSbzFIhtLxJh3k'));
   bot.modules.add(BaseModule());
 
   return bot;
@@ -39,7 +40,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MainScreen(),
+      darkTheme: ThemeData.dark(),
+      routes: {
+        '/': (context) => MainScreen(),
+        '/setting': (context) => const Setting(),
+      },
     );
   }
 }

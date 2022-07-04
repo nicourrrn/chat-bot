@@ -1,7 +1,6 @@
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
-import 'api.dart';
 
 class Bot extends ChangeNotifier {
   final List<Message> _messageHistory = [];
@@ -58,4 +57,24 @@ class Bot extends ChangeNotifier {
     }
     return templateNames;
   }
+}
+
+
+abstract class Module{
+  Future<Message?> execute(Bot context, List<String> args);
+  Iterable<String> get commandNames;
+}
+
+abstract class Message {
+  static int lastId = -1;
+
+  Message (this.isUser, [this.moduleName]) {
+    lastId ++;
+  }
+
+  late final int id = lastId;
+  late final bool isUser;
+  late final String? moduleName;
+  DateTime createAt = DateTime.now();
+  Widget getWidget();
 }

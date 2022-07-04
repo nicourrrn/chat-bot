@@ -1,8 +1,6 @@
 import 'dart:core';
-import 'dart:io';
 
-import 'package:chat_bot/bot_api/api.dart';
-import 'package:chat_bot/bot_api/bot.dart';
+import 'package:chat_bot/api/api.dart';
 
 import 'messages.dart';
 

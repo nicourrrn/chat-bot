@@ -1,6 +1,6 @@
-import 'package:chat_bot/bot_api/api.dart';
-import 'package:chat_bot/bot_api/bot.dart';
-import 'package:chat_bot/base_module/messages.dart';
+import 'package:chat_bot/api/api.dart';
+import 'package:chat_bot/modules/base_module/messages.dart';
+
 import 'package:monobank_api/monobank_api.dart';
 
 class MonoModule extends Module {
@@ -10,17 +10,21 @@ class MonoModule extends Module {
   Future<Message?> getClientInfo(Bot context, List<String> args) async {
     var clientInfo = await monoApi.clientInfo();
     var text = "${clientInfo.name}:\n";
-    text += clientInfo.accounts.map((e) => "${e.cards.first.mask}: ${e.balance}").join('\n');
+    text += clientInfo.accounts
+        .map((e) => "${e.cards.first.mask}: ${e.balance}")
+        .join('\n');
     return TextMessage(text, false);
   }
 
   Future<Message?> getCurrency(Bot context, List<String> args) async {
     var currency = await monoApi.currency();
     var text = currency
-        .map((CurrencyInfo e) => "${e.currencyA.code}/${e.currencyB.code}: ${e.rateBuy}/${e.rateSell}")
+        .map((CurrencyInfo e) =>
+            "${e.currencyA.code}/${e.currencyB.code}: ${e.rateBuy}/${e.rateSell}")
         .join('\n');
-    return TextMessage(text ,false);
+    return TextMessage(text, false);
   }
+
   MonoModule(String token) {
     monoApi = MonoAPI(token);
     commands = {
@@ -39,5 +43,4 @@ class MonoModule extends Module {
       return command(context, args);
     }
   }
-
 }
