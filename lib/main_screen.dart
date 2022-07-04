@@ -15,69 +15,88 @@ class MainScreen extends StatelessWidget {
   void scrollToEnd() {
     final position = scrollMessageCtrl.position.maxScrollExtent;
     scrollMessageCtrl.animateTo(position,
-          duration: const Duration(milliseconds: 500), curve: Curves.fastOutSlowIn);
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.fastOutSlowIn);
   }
 
   @override
   Widget build(BuildContext context) {
     var bot = context.watch<Bot>();
+
     // Возможно перерассмотреть способ прокрутки
     // Как вариант вынести область прокрути в другой класс
     // или сделать более грамотный scrollMessageCtrl.addListener
-
     WidgetsBinding.instance?.addPostFrameCallback((duration) => scrollToEnd());
 
     return Scaffold(
         appBar: AppBar(
-          title: const Text("Hello from app"),
+          title: const Text("Chat bot"),
         ),
         body: Column(children: [
           Expanded(
-            child: Padding( padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: ListView.builder(
-                  controller: scrollMessageCtrl,
-                  shrinkWrap: true,
-                  itemCount: bot.messageHistory.length,
-                  itemBuilder: (context, i) {
-                    var msg = bot.messageHistory[i];
-                    return Container(
-                      child: msg.getWidget(),
-                      alignment: msg.isUser
-                          ? AlignmentDirectional.centerEnd
-                          : AlignmentDirectional.centerStart,
-                      padding: const EdgeInsets.only(bottom: 5),
-                    );
-                  }))),
-          Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                  Expanded(child: TextField(
-                      controller: userTextCtrl,
-                      decoration: InputDecoration(
+              child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: ListView.builder(
+                      controller: scrollMessageCtrl,
+                      shrinkWrap: true,
+                      itemCount: bot.messageHistory.length,
+                      itemBuilder: (context, i) {
+                        var msg = bot.messageHistory[i];
+                        return Container(
+                          child: msg.getWidget(),
+                          alignment: msg.isUser
+                              ? AlignmentDirectional.centerEnd
+                              : AlignmentDirectional.centerStart,
+                          padding: const EdgeInsets.only(bottom: 5),
+                        );
+                      }))),
+          Container(
+              padding: const EdgeInsets.symmetric(vertical: 4),
+              color: Theme.of(context).colorScheme.background,
+              child:
+                  Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                FloatingActionButton.small(
+                    child: const Icon(Icons.add),
+                    shape: const CircleBorder(),
+                    elevation: 0,
+                    backgroundColor: Theme.of(context).backgroundColor,
+                    onPressed: () {}),
+                Expanded(
+                    child: TextField(
+                        controller: userTextCtrl,
+                        decoration: const InputDecoration(
                           hintText: "Ваше повідомлення",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
-                            borderSide: BorderSide.none
-                          ),
-                          filled: true,
-                          fillColor: Colors.blue.shade100))),
-                  OutlinedButton(
-                      child: const Text("Send"),
-                      onPressed: () {
-                        if (userTextCtrl.text == '') {
-                          return;
-                        }
-                        var text = userTextCtrl.text;
-                        bot.addMessage(TextMessage(text, true));
-                        var result = bot.doCommand(text.split(' '));
-                        if (result != null) {
-                          bot.addMessage(result);
-                        }
-                        userTextCtrl.text = '';
-                      })
-                ])),
+                          border: InputBorder.none,
+                          // border: OutlineInputBorder(
+                          //     borderRadius: BorderRadius.circular(15),
+                          //     borderSide: BorderSide.none),
+                          // filled: true,
+                          // fillColor: Colors.blue.shade100
+                        ))),
+                FloatingActionButton.small(
+                    elevation: 0,
+                    backgroundColor: Theme.of(context).backgroundColor,
+                    child: const Icon(Icons.send),
+                    onPressed: () {
+                      if (userTextCtrl.text == '') {
+                        return;
+                      }
+                      var text = userTextCtrl.text;
+                      bot.addMessage(TextMessage(text, true));
+                      var result = bot.doCommand(text.split(' '));
+                      if (result != null) {
+                        bot.addMessage(result);
+                      }
+                      userTextCtrl.text = '';
+                    })
+              ])),
+          // ListView.builder(itemBuilder:
+          //     (BuildContext context, int index) {
+          //       return Row(
+          //
+          //       )
+          //     },
+          // )
         ]));
   }
 }
