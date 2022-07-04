@@ -11,6 +11,17 @@ class Bot extends ChangeNotifier {
     _messageHistory.add(message);
     notifyListeners();
   }
+  // TODO Добавить редактирование посредством замещения ссылки
+  // (передавать не ид а сообщение как в delete)
+  editMessage(int messageId, Message newMessage) {
+    for (var i = 0; i < _messageHistory.length; i++) {
+      if (_messageHistory[i].id == messageId){
+        _messageHistory[i] = newMessage;
+        break;
+      }
+    }
+    notifyListeners();
+  }
 
   UnmodifiableListView<Message> get messageHistory =>
       UnmodifiableListView(_messageHistory);

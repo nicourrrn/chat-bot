@@ -35,6 +35,7 @@ class BaseModule extends Module {
         .last as TextMessage;
     Future.delayed(const Duration(seconds: 1), () {
       lastMessage.text = "Діна!";
+      context.editMessage(lastMessage.id, lastMessage);
     });
     return TextMessage("Я тебе виправлю...", false);
   }
