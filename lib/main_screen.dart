@@ -6,6 +6,17 @@ import 'package:provider/provider.dart';
 
 import 'base_module/messages.dart';
 
+class ScreenState extends ChangeNotifier{
+  var _showCommands = false;
+
+  bool get showCommands => _showCommands;
+  changeShowCommands() {
+    _showCommands = !_showCommands;
+    notifyListeners();
+  }
+
+}
+
 class MainScreen extends StatelessWidget {
   MainScreen({Key? key}) : super(key: key);
 
@@ -19,9 +30,28 @@ class MainScreen extends StatelessWidget {
         curve: Curves.fastOutSlowIn);
   }
 
+  List<Row> getCommandsHelper(Bot context) {
+    var commands = context.commandNames.toList();
+    List<Row> result = [];
+    for (var i = 0; i < commands.length; i += 3) {
+      result.add(Row(
+          children: commands
+              .map((e) => TextButton(
+                  child: Text(e),
+                  onPressed: () {
+                    userTextCtrl.text = e;
+                  }))
+              .toList()));
+    }
+    return result;
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     var bot = context.watch<Bot>();
+    var screenState = context.watch<ScreenState>();
 
     // Возможно перерассмотреть способ прокрутки
     // Как вариант вынести область прокрути в другой класс
@@ -60,7 +90,7 @@ class MainScreen extends StatelessWidget {
                     shape: const CircleBorder(),
                     elevation: 0,
                     backgroundColor: Theme.of(context).backgroundColor,
-                    onPressed: () {}),
+                    onPressed: screenState.changeShowCommands),
                 Expanded(
                     child: TextField(
                         controller: userTextCtrl,
@@ -77,26 +107,24 @@ class MainScreen extends StatelessWidget {
                     elevation: 0,
                     backgroundColor: Theme.of(context).backgroundColor,
                     child: const Icon(Icons.send),
-                    onPressed: () {
+                    onPressed: () async {
                       if (userTextCtrl.text == '') {
                         return;
                       }
                       var text = userTextCtrl.text;
                       bot.addMessage(TextMessage(text, true));
-                      var result = bot.doCommand(text.split(' '));
+                      var result = await bot.doCommand(text.split(' '));
                       if (result != null) {
                         bot.addMessage(result);
                       }
                       userTextCtrl.text = '';
                     })
               ])),
-          // ListView.builder(itemBuilder:
-          //     (BuildContext context, int index) {
-          //       return Row(
-          //
-          //       )
-          //     },
-          // )
+          SizedBox(
+              height: screenState.showCommands ? MediaQuery.of(context).size.height / 3.5 : 0,
+              child: ListView(
+                children: getCommandsHelper(bot),
+              ))
         ]));
   }
 }

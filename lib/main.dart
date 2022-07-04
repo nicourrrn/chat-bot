@@ -18,7 +18,11 @@ void main() {
   var bot = botWithModules();
 
   runApp(
-    ChangeNotifierProvider.value(value: bot,
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(value: bot),
+        ChangeNotifierProvider(create: (context) => ScreenState())
+      ],
       child: const MyApp(),
     )
   );
