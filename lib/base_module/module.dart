@@ -30,11 +30,12 @@ class BaseModule extends Module {
   }
 
   Future<Message> dianaToDina(Bot context, List<String> args) async {
-    sleep(const Duration(seconds: 1));
     var lastMessage = context.messageHistory
         .where((element) => element.isUser)
         .last as TextMessage;
-    lastMessage.text = "Діна!";
+    Future.delayed(const Duration(seconds: 1), () {
+      lastMessage.text = "Діна!";
+    });
     return TextMessage("Я тебе виправлю...", false);
   }
 

@@ -5,10 +5,11 @@ import 'main_screen.dart';
 import 'package:chat_bot/bot_api/bot.dart';
 
 import 'package:chat_bot/base_module/module.dart';
-
+import 'package:chat_bot/monobank_module/module.dart';
 
 Bot botWithModules() {
   var bot = Bot();
+  bot.modules.add(MonoModule(''));
   bot.modules.add(BaseModule());
 
   return bot;

@@ -33,6 +33,13 @@ class Bot extends ChangeNotifier {
     }
   }
 
+  doAndAddCommand(List<String> args) async {
+    var result = await doCommand(args);
+    if (result != null) {
+      addMessage(result);
+    }
+  }
+
   Iterable<String> get commandNames {
     List<String> templateNames = [];
     for (var element in modules) {

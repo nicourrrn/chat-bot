@@ -3,7 +3,8 @@ import 'bot.dart';
 
 
 abstract class Module{
-  Message? execute(Bot context, List<String> args);
+  Future<Message?> execute(Bot context, List<String> args);
+  Iterable<String> get commandNames;
 }
 
 abstract class Message {
