@@ -56,12 +56,13 @@ class Bot extends ChangeNotifier {
   Iterable<Module> get allModules =>
       _enabledModules.followedBy(_disabledModules);
 
-  Map<String, Iterable<String>> get commandNames => allModules
-          .map((e) => {e.runtimeType.toString(): e.commandNames})
+  Map<Module, Iterable<String>> get commandNames => allModules
+          .map((e) => {e: e.commandNames})
           .reduce((value, element) {
         value.addAll(element);
         return value;
       });
+
   bool isEnable(Module m) {
     return _enabledModules.contains(m);
   }

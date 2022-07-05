@@ -46,16 +46,17 @@ class MainScreen extends StatelessWidget {
 
     List<Widget> modulesCommand = [];
     var commands = context.commandNames;
+    commands.removeWhere((key, value) => !context.isEnable(key));
     for (var row in commands.entries) {
       List<List<String>> moduleCommands = [[]];
       for (var c = 0; c < row.value.length; c++) {
         if (c % 3 == 0) {
           moduleCommands.add([]);
         }
-        moduleCommands.last.add(row.value.skip(c).first);
+        moduleCommands.last.add(row.value.skip(c).first + " ");
       }
       modulesCommand
-          .add(Padding(child: Text(row.key, style: Theme.of(appContext).textTheme.subtitle2),
+          .add(Padding(child: Text(row.key.runtimeType.toString(), style: Theme.of(appContext).textTheme.subtitle2),
         padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 8),));
 
       modulesCommand

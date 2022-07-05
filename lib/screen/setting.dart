@@ -42,9 +42,9 @@ class Setting extends StatelessWidget {
 
               return ListTile(
                 title: Text(module.runtimeType.toString(), style: TextStyle(
-                  color: bot.isEnable(module) ? Theme.of(context).disabledColor : null
+                  color: bot.isEnable(module) ? null : Theme.of(context).disabledColor
                 )),
-                onTap: bot.isEnable(module) ? () => bot.disableModule(module) : bot.enableModule(module),
+                onTap: bot.isEnable(module) ? () => bot.disableModule(module) : () => bot.enableModule(module),
               );
             },
           ))
