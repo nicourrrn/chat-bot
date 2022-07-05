@@ -44,8 +44,8 @@ class MainScreen extends StatelessWidget {
     List<Widget> modulesCommand = [];
     var commands = context.commandNames;
     for (var row in commands.entries) {
-      List<List<String>> moduleCommands = [];
-      for (var c = 0; c < row.value.length; row.value) {
+      List<List<String>> moduleCommands = [[]];
+      for (var c = 0; c < row.value.length; c++) {
         if (c + 1 % 3 == 0) {
           moduleCommands.add([]);
         }

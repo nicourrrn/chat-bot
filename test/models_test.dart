@@ -1,7 +1,7 @@
-import 'package:chat_bot/base_module/messages.dart';
-import 'package:chat_bot/base_module/module.dart';
-import 'package:chat_bot/bot_api/bot.dart';
-import 'package:chat_bot/bot_api/api.dart';
+import 'package:chat_bot/api/api.dart';
+import 'package:chat_bot/screen/root.dart';
+import 'package:chat_bot/modules/base_module/module.dart';
+import 'package:chat_bot/modules/base_module/messages.dart';
 
 import 'package:test/test.dart';
 
@@ -15,8 +15,8 @@ void main(){
   });
   test('Test bot reply', () async {
     var bot = Bot();
-    bot.modules.add(BaseModule());
-    var result = bot.doCommand(['/reply', 'hello', 'my drug']);
+    bot.enableModule(BaseModule());
+    var result = await bot.doCommand(['/reply', 'hello', 'my drug']);
     expect((result as TextMessage).text, "hello my drug");
   });
 }
