@@ -19,25 +19,37 @@ class Setting extends StatelessWidget {
               leading: const Icon(Icons.home),
               title: const Text("Головна"),
               onTap: () {
-                Navigator.of(context).popAndPushNamed('/');
+                Navigator.of(context).pushReplacementNamed('/');
               },
             ),
             ListTile(
               leading: const Icon(Icons.settings),
               title: const Text("Налаштування"),
               onTap: () {
-                Navigator.of(context).popAndPushNamed('/setting');
+                Navigator.of(context).pushReplacementNamed('/setting');
               },
             )
           ],
         ),
       ),
       body: Column(
-        children: const [
-          Center(child: Text("Тут нічого немає..."))
+        children: [
+          Expanded(
+              child: ListView.builder(
+            itemCount: bot.allModules.length,
+            itemBuilder: (context, i) {
+              var module = bot.allModules.skip(i).first;
+
+              return ListTile(
+                title: Text(module.runtimeType.toString(), style: TextStyle(
+                  color: bot.isEnable(module) ? Theme.of(context).disabledColor : null
+                )),
+                onTap: bot.isEnable(module) ? () => bot.disableModule(module) : bot.enableModule(module),
+              );
+            },
+          ))
         ],
       ),
     );
   }
-
 }

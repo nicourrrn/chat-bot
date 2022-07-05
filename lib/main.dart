@@ -10,9 +10,9 @@ import 'package:chat_bot/screen/setting.dart';
 
 Bot botWithModules() {
   var bot = Bot();
-  bot.modules.add(MonoModule('uiQEBoAL2lI6XkMRKHYAy-fBnaYjNKKSbzFIhtLxJh3k'));
-  bot.modules.add(BaseModule());
+  bot.enableModule(MonoModule('uiQEBoAL2lI6XkMRKHYAy-fBnaYjNKKSbzFIhtLxJh3k'));
 
+  bot.enableModule(BaseModule());
   return bot;
 }
 
@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Chat bot',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),

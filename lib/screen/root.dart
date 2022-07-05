@@ -2,20 +2,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
-
 import 'package:chat_bot/modules/base_module/messages.dart';
 import 'package:chat_bot/api/api.dart';
 
-class ScreenState extends ChangeNotifier{
+class ScreenState extends ChangeNotifier {
   var _showCommands = false;
 
   bool get showCommands => _showCommands;
+
   changeShowCommands() {
     _showCommands = !_showCommands;
     notifyListeners();
   }
-
 }
+
 
 class MainScreen extends StatelessWidget {
   MainScreen({Key? key}) : super(key: key);
@@ -30,36 +30,34 @@ class MainScreen extends StatelessWidget {
         curve: Curves.fastOutSlowIn);
   }
 
-  List<Row> getCommandsHelper(Bot context) {
-    var commands = context.commandNames.toList();
-    List<Row> result = [];
-    for (var i = 0; i < commands.length; i += 3) {
-      var end = i + 3 < commands.length ? i + 3 : commands.length - 1;
-      var commandsRow = commands.getRange(i, end);
-      result.add(Row(
-          children: commandsRow
-              .map((e) => Expanded(child: TextButton(
-                  child: Text(e),
-                  onPressed: () {
-                    userTextCtrl.text = e;
-                  })))
-              .toList()));
-    }
-    var divByThree = commands.length % 3;
-    if (divByThree!= 0) {
-      result.add(Row(
-        children: commands.getRange(commands.length - divByThree, commands.length)
-        .map((e) => Expanded(child: TextButton(
-          child: Text(e),
-          onPressed: (){
-            userTextCtrl.text = e;
-          },
-        ))).toList(),
-      ));
-    }
-    return result;
-  }
+  List<Widget> getCommandsHelper(Bot context) {
+    getButton(String e) => Expanded(
+            child: Container(
+          child: TextButton(
+            child: Text(e),
+            onPressed: () {
+              userTextCtrl.text = e;
+            },
+          ),
+        ));
 
+    List<Widget> modulesCommand = [];
+    var commands = context.commandNames;
+    for (var row in commands.entries) {
+      List<List<String>> moduleCommands = [];
+      for (var c = 0; c < row.value.length; row.value) {
+        if (c + 1 % 3 == 0) {
+          moduleCommands.add([]);
+        }
+        moduleCommands.last.add("${row.key}: ${row.value.first}");
+        row.value.skip(1);
+      }
+      modulesCommand
+          .addAll([for (var r in moduleCommands) Row(children: r.map((e) => getButton(e)).toList())]);
+    }
+
+    return modulesCommand;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,17 +77,17 @@ class MainScreen extends StatelessWidget {
           child: ListView(
             children: [
               ListTile(
-                leading: Icon(Icons.home),
+                leading: const Icon(Icons.home),
                 title: const Text("Головна"),
                 onTap: () {
-                  Navigator.of(context).popAndPushNamed('/');
+                  Navigator.of(context).pushReplacementNamed('/');
                 },
               ),
               ListTile(
                 leading: const Icon(Icons.settings),
                 title: const Text("Налаштування"),
                 onTap: () {
-                  Navigator.of(context).popAndPushNamed('/setting');
+                  Navigator.of(context).pushReplacementNamed('/setting');
                 },
               )
             ],
@@ -119,6 +117,7 @@ class MainScreen extends StatelessWidget {
               child:
                   Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 FloatingActionButton.small(
+                    heroTag: 'showMenu',
                     child: const Icon(Icons.add),
                     shape: const CircleBorder(),
                     elevation: 0,
@@ -137,6 +136,7 @@ class MainScreen extends StatelessWidget {
                           // fillColor: Colors.blue.shade100
                         ))),
                 FloatingActionButton.small(
+                    heroTag: "sendMessage",
                     elevation: 0,
                     backgroundColor: Theme.of(context).backgroundColor,
                     child: const Icon(Icons.send),
@@ -151,7 +151,9 @@ class MainScreen extends StatelessWidget {
                     })
               ])),
           SizedBox(
-              height: screenState.showCommands ? MediaQuery.of(context).size.height / 3.5 : 0,
+              height: screenState.showCommands
+                  ? MediaQuery.of(context).size.height / 3.5
+                  : 0,
               child: ListView(
                 children: getCommandsHelper(bot),
               ))
