@@ -30,14 +30,17 @@ class MainScreen extends StatelessWidget {
         curve: Curves.fastOutSlowIn);
   }
 
-  List<Widget> getCommandsHelper(Bot context) {
+  List<Widget> getCommandsHelper(Bot context, BuildContext appContext) {
     getButton(String e) => Expanded(
             child: Container(
+              margin: const EdgeInsets.all(6),
+              decoration: BoxDecoration(
+                color: Theme.of(appContext).backgroundColor,
+                borderRadius: BorderRadius.circular(16),
+              ),
           child: TextButton(
             child: Text(e),
-            onPressed: () {
-              userTextCtrl.text = e;
-            },
+            onPressed: () => userTextCtrl.text = e,
           ),
         ));
 
@@ -46,12 +49,15 @@ class MainScreen extends StatelessWidget {
     for (var row in commands.entries) {
       List<List<String>> moduleCommands = [[]];
       for (var c = 0; c < row.value.length; c++) {
-        if (c + 1 % 3 == 0) {
+        if (c % 3 == 0) {
           moduleCommands.add([]);
         }
-        moduleCommands.last.add("${row.key}: ${row.value.first}");
-        row.value.skip(1);
+        moduleCommands.last.add(row.value.skip(c).first);
       }
+      modulesCommand
+          .add(Padding(child: Text(row.key, style: Theme.of(appContext).textTheme.subtitle2),
+        padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 8),));
+
       modulesCommand
           .addAll([for (var r in moduleCommands) Row(children: r.map((e) => getButton(e)).toList())]);
     }
@@ -155,7 +161,7 @@ class MainScreen extends StatelessWidget {
                   ? MediaQuery.of(context).size.height / 3.5
                   : 0,
               child: ListView(
-                children: getCommandsHelper(bot),
+                children: getCommandsHelper(bot, context),
               ))
         ]));
   }
