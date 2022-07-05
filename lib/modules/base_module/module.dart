@@ -28,14 +28,22 @@ class BaseModule extends Module {
   }
 
   Future<Message> dianaToDina(Bot context, List<String> args) async {
-    var lastMessage = context.messageHistory
+    var messageId = (context.messageHistory
         .where((element) => element.isUser)
-        .last as TextMessage;
+        .last as TextMessage).id;
     Future.delayed(const Duration(seconds: 1), () {
-      lastMessage.text = "Діна!";
-      context.editMessage(lastMessage, id: lastMessage.id);
+      var newMessage = TextMessage("Діна", true);
+      context.editMessage(newMessage, id: messageId);
     });
-    return TextMessage("Я тебе виправлю...", false);
+    return TextMessage("Я тебе виправлю... ", false);
+  }
+
+  Future<Message> start(Bot context, List<String> args) async {
+    return TextMessage("Приємно познайомитись !", false);
+  }
+
+  Future<Message> calculation(Bot context, List<String> args) async {
+    return TextMessage("Я поки що так не вмію", false);
   }
 
   late Map<String, Future<Message?> Function(Bot, List<String>)> commands;
@@ -44,6 +52,8 @@ class BaseModule extends Module {
     commands = {
       '/reply': replyMessage,
       '/clear': clear,
+      '/start': start,
+      '/calculation': calculation,
     };
   }
 
@@ -58,8 +68,8 @@ class BaseModule extends Module {
         return plantText(context, args);
       case 'Діана':
         return dianaToDina(context, args);
-      default:
-        return notFound(context, args);
+      // default:
+      //   return notFound(context, args);
     }
   }
 
