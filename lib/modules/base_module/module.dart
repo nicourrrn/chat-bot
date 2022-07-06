@@ -26,10 +26,6 @@ class BaseModule extends Module {
     return TextMessage("Чи вечір....", false);
   }
 
-  Future<Message> notFound(Bot context, List<String> args) async {
-    return ErrorMessage("Команда не знайдена !", false);
-  }
-
   Future<Message> dianaToDina(Bot context, List<String> args) async {
     var messageId = (context.messageHistory
         .where((element) => element.isUser)
