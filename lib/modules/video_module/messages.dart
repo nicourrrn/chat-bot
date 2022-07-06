@@ -3,17 +3,22 @@ import 'package:chat_bot/modules/base_module/messages.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
+import 'dart:io';
 
 class VideoState extends ChangeNotifier {
   late VideoPlayerController _ctrl;
-  late String url;
-  
-  VideoState(String path) {
-    url = path;
-    _ctrl = VideoPlayerController.network(path);
-  }
+  String path;
 
-  Future<void> initialize() => _ctrl.initialize();
+  VideoState(this.path);
+
+  Future<void> initialize() async {
+    if (path.contains('http')){
+      _ctrl = VideoPlayerController.network(path);
+    } else {
+      _ctrl = VideoPlayerController.file(File(path));
+    }
+    return await _ctrl.initialize();
+  }
   Future<void> changePlaying() async {
     if (_ctrl.value.isPlaying) {
       _ctrl.pause();
@@ -48,9 +53,21 @@ class VideoMessage extends Message {
             );
           } else {
             return Center(
-              child: TextMessage(_state.url, false).getWidget(),
+              child: TextMessage(_state.path, false).getWidget(),
             );
           }
         }));
   }
+}
+
+
+class ImageMessage extends Message {
+  String path;
+  ImageMessage(this.path, bool isUser) : super(isUser);
+
+  @override
+  Widget getWidget() {
+     return Image.file(File(path));
+  }
+  
 }
