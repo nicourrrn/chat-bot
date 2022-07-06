@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:chat_bot/api/api.dart';
 import 'package:chat_bot/modules/base_module/module.dart';
 import 'package:chat_bot/modules/monobank_module/module.dart';
+import 'package:chat_bot/modules/video_module/module.dart';
 
 import 'package:chat_bot/screen/root.dart';
 import 'package:chat_bot/screen/setting.dart';
@@ -11,6 +12,7 @@ import 'package:chat_bot/screen/setting.dart';
 Bot botWithModules() {
   var bot = Bot();
   bot.enableModule(MonoModule('uiQEBoAL2lI6XkMRKHYAy-fBnaYjNKKSbzFIhtLxJh3k'));
+  bot.enableModule(VideoViewModule());
 
   bot.enableModule(BaseModule());
   return bot;

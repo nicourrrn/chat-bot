@@ -119,13 +119,12 @@ class MainScreen extends StatelessWidget {
                         );
                       }))),
           Container(
-              padding: const EdgeInsets.symmetric(vertical: 4),
               color: Theme.of(context).colorScheme.background,
               child:
                   Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 FloatingActionButton.small(
                     heroTag: 'showMenu',
-                    child: const Icon(Icons.add),
+                    child: screenState._showCommands ? const Icon(Icons.remove) : const Icon(Icons.add) ,
                     shape: const CircleBorder(),
                     elevation: 0,
                     backgroundColor: Theme.of(context).backgroundColor,
@@ -136,11 +135,6 @@ class MainScreen extends StatelessWidget {
                         decoration: const InputDecoration(
                           hintText: "Ваше повідомлення",
                           border: InputBorder.none,
-                          // border: OutlineInputBorder(
-                          //     borderRadius: BorderRadius.circular(15),
-                          //     borderSide: BorderSide.none),
-                          // filled: true,
-                          // fillColor: Colors.blue.shade100
                         ))),
                 FloatingActionButton.small(
                     heroTag: "sendMessage",

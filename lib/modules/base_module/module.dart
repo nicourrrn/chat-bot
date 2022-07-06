@@ -5,6 +5,8 @@ import 'package:chat_bot/api/api.dart';
 import 'messages.dart';
 
 class BaseModule extends Module {
+  var wasCleaned = 0;
+
   Future<Message> replyMessage(Bot context, List<String> args) async {
     return TextMessage(args.skip(1).join(' '), false, 'BaseModule');
   }
@@ -14,8 +16,9 @@ class BaseModule extends Module {
     for (int i = context.messageHistory.length - 1; i >= 0; i--) {
       context.deleteMessage(index: i);
     }
+    wasCleaned ++;
     return TextMessage(
-        "Було виделано $messageCount повідомлень!", false, 'BaseModule');
+        "Було виделано $messageCount повідомлень! $wasCleaned рази!", false, 'BaseModule');
   }
 
   Future<Message> plantText(Bot context, List<String> args) async {
