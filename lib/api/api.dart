@@ -76,12 +76,35 @@ class Bot extends ChangeNotifier {
     }
   }
 
-  doAndAddCommand(List<String> args) async {
+  doAndAddCommand(BuildContext context, List<String> args) async {
     var result = await doCommand(args);
     if (result != null) {
-      addMessage(result);
+      addMessage(BaseMessage(context, result));
     }
   }
+}
+
+
+class BaseMessage extends Message {
+  Message m;
+  BuildContext context;
+  BaseMessage(this.context, this.m) : super(m.isUser);
+
+  @override
+  Widget getWidget() {
+    double leftMargin = isUser ? MediaQuery.of(context).size.width / 6 : 2;
+    double rightMargin = isUser ? 2 : MediaQuery.of(context).size.width / 6;
+    return Container(
+      child: m.getWidget(),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        color: Theme.of(context).backgroundColor,
+      ),
+      padding: const EdgeInsets.all(8),
+      margin: EdgeInsets.only(left: leftMargin, right: rightMargin),
+    );
+  }
+
 }
 
 abstract class Module {

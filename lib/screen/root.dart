@@ -147,8 +147,8 @@ class MainScreen extends StatelessWidget {
                       }
                       var text = userTextCtrl.text;
                       userTextCtrl.text = '';
-                      bot.addMessage(TextMessage(text, true));
-                      bot.doAndAddCommand(text.split(' '));
+                      bot.addMessage(BaseMessage(context, TextMessage(text, true)));
+                      bot.doAndAddCommand(context, text.split(' '));
                     })
               ])),
           SizedBox(
