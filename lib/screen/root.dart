@@ -7,11 +7,20 @@ import 'package:chat_bot/api/api.dart';
 
 class ScreenState extends ChangeNotifier {
   var _showCommands = false;
+  var _showSendFile = false;
 
   bool get showCommands => _showCommands;
+  bool get showSendFile => _showSendFile;
+
+  changeShowSendFile() {
+    _showSendFile = !_showSendFile;
+    _showCommands = false;
+    notifyListeners();
+  }
 
   changeShowCommands() {
     _showCommands = !_showCommands;
+    _showSendFile = false;
     notifyListeners();
   }
 }
@@ -129,6 +138,14 @@ class MainScreen extends StatelessWidget {
                     elevation: 0,
                     backgroundColor: Theme.of(context).backgroundColor,
                     onPressed: screenState.changeShowCommands),
+                FloatingActionButton.small(
+                  heroTag: 'showFiles',
+                  child: const Icon(Icons.create),
+                  shape: const CircleBorder(),
+                  elevation: 0,
+                  backgroundColor: Theme.of(context).backgroundColor,
+                  onPressed: screenState.changeShowSendFile,
+                ),
                 Expanded(
                     child: TextField(
                         controller: userTextCtrl,
@@ -157,7 +174,18 @@ class MainScreen extends StatelessWidget {
                   : 0,
               child: ListView(
                 children: getCommandsHelper(bot, context),
-              ))
+              )),
+          SizedBox(
+            height: screenState.showSendFile
+                ? MediaQuery.of(context).size.height / 3.5
+                : 0,
+            child: ListView(
+              children: [
+                ElevatedButton(onPressed: () => bot.doAndAddCommand(context, ['/video', '']), child: const Text('Video')),
+                ElevatedButton(onPressed: () => bot.doAndAddCommand(context, ['/image', '']), child: const Text('Image'))
+              ],
+            )
+          )
         ]));
   }
 }
